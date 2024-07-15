@@ -38,3 +38,4 @@
 2026-04-27T15:41:31  chore: bump dev tooling
 2024-06-12T17:37:47  perf(docs): add usage examples to help
 2024-06-19T12:54:54  fix: handle empty input gracefully
+2024-07-15T19:11:01  fix(output): cover the multiline case
