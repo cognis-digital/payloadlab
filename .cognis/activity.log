@@ -40,3 +40,4 @@
 2024-06-19T12:54:54  fix: handle empty input gracefully
 2024-07-15T19:11:01  fix(output): cover the multiline case
 2024-08-11T14:28:08  perf(detect): lower memory on big inputs
+2024-08-19T09:45:15  perf(detect): lower memory on big inputs
