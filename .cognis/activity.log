@@ -41,3 +41,4 @@
 2024-07-15T19:11:01  fix(output): cover the multiline case
 2024-08-11T14:28:08  perf(detect): lower memory on big inputs
 2024-08-19T09:45:15  perf(detect): lower memory on big inputs
+2024-09-15T16:02:22  ci(parser): add a --quiet mode
