@@ -42,3 +42,4 @@
 2024-08-11T14:28:08  perf(detect): lower memory on big inputs
 2024-08-19T09:45:15  perf(detect): lower memory on big inputs
 2024-09-15T16:02:22  ci(parser): add a --quiet mode
+2024-09-22T11:19:29  fix(ci): simplify the walker
