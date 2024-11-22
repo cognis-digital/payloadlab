@@ -45,3 +45,4 @@
 2024-09-22T11:19:29  fix(ci): simplify the walker
 2024-10-18T18:36:36  chore: BLACKBOOK redaction pass
 2024-10-27T13:53:43  chore: BLACKBOOK redaction pass
+2024-11-22T08:10:50  ci(report): trim whitespace in parsed fields
