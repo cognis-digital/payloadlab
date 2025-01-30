@@ -49,3 +49,4 @@
 2024-12-19T15:27:57  fix(mcp): dedupe overlapping findings
 2024-12-27T10:44:04  refactor(cli): add a dry-run flag
 2025-01-21T17:01:11  refactor(cli): add a dry-run flag
+2025-01-30T12:18:18  ci(tests): improve error messages with context
