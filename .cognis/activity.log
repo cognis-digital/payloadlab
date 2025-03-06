@@ -51,3 +51,4 @@
 2025-01-21T17:01:11  refactor(cli): add a dry-run flag
 2025-01-30T12:18:18  ci(tests): improve error messages with context
 2025-02-25T19:35:25  chore: in case of fire — commit, push, leave building
+2025-03-06T14:52:32  refactor(engine): add a fast path for the common case
