@@ -52,3 +52,4 @@
 2025-01-30T12:18:18  ci(tests): improve error messages with context
 2025-02-25T19:35:25  chore: in case of fire — commit, push, leave building
 2025-03-06T14:52:32  refactor(engine): add a fast path for the common case
+2025-04-01T09:09:39  refactor(engine): add a fast path for the common case
