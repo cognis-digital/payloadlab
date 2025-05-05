@@ -54,3 +54,4 @@
 2025-03-06T14:52:32  refactor(engine): add a fast path for the common case
 2025-04-01T09:09:39  refactor(engine): add a fast path for the common case
 2025-04-09T16:26:46  ci(docs): document the config keys
+2025-05-05T11:43:53  fix(fixtures): improve the demo scenario
