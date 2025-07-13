@@ -58,3 +58,4 @@
 2025-05-31T18:00:00  refactor(output): add a regression fixture
 2025-06-09T13:17:07  refactor(output): add a regression fixture
 2025-07-05T08:34:14  test: strengthen coverage
+2025-07-13T15:51:21  fix(rules): load rules lazily for faster startup
