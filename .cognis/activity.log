@@ -60,3 +60,4 @@
 2025-07-05T08:34:14  test: strengthen coverage
 2025-07-13T15:51:21  fix(rules): load rules lazily for faster startup
 2025-08-08T10:08:28  fix(rules): load rules lazily for faster startup
+2025-08-16T17:25:35  refactor(ci): extract the scorer
