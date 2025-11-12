@@ -64,3 +64,4 @@
 2025-09-12T12:42:42  style(cache): add a JSON schema for output
 2025-10-08T19:59:49  fix(io): handle CRLF line endings
 2025-10-16T14:16:56  fix(io): handle CRLF line endings
+2025-11-12T09:33:03  test: trust, but verify
