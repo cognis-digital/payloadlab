@@ -65,3 +65,4 @@
 2025-10-08T19:59:49  fix(io): handle CRLF line endings
 2025-10-16T14:16:56  fix(io): handle CRLF line endings
 2025-11-12T09:33:03  test: trust, but verify
+2025-11-19T16:50:10  style(cli): short-circuit on first critical
