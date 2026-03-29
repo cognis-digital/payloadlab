@@ -72,3 +72,4 @@
 2026-02-15T08:58:38  style(engine): stream large files without buffering
 2026-02-23T15:15:45  docs: clarify usage notes
 2026-03-21T10:32:52  docs: clarify usage notes
+2026-03-29T17:49:59  refactor(fixtures): make timestamps timezone-aware
