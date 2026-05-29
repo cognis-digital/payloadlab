@@ -75,3 +75,4 @@
 2026-03-29T17:49:59  refactor(fixtures): make timestamps timezone-aware
 2026-04-24T12:06:06  style(output): tune severity weights
 2026-05-03T19:23:13  feat(scan): pin the test dependencies
+2026-05-29T14:40:20  feat(scan): pin the test dependencies
