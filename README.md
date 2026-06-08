@@ -36,7 +36,11 @@ Static malicious payload analyzer — PE/ELF/LNK/macro/OneNote — without stand
 <a name="features"></a>
 ## Features
 
-- ✅ Scan
+- ✅ Shannon Entropy
+- ✅ Detect Format
+- ✅ Score Verdict
+- ✅ Analyze Bytes
+- ✅ Analyze File
 - ✅ Runs on Linux/macOS/Windows · Docker · devcontainer
 - ✅ Ports in Python, JavaScript, Go, and Rust (`ports/`)
 
