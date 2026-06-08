@@ -1,0 +1,10 @@
+{
+  "name": "@cognis/payloadlab",
+  "version": "0.2.0",
+  "description": "JavaScript port of payloadlab (Cognis Neural Suite)",
+  "bin": {
+    "payloadlab": "index.js"
+  },
+  "license": "LicenseRef-COCL-1.0",
+  "type": "module"
+}
