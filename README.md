@@ -124,7 +124,17 @@ Pipes into your stack: **SARIF** for code-scanning, **JSON** for anything, an **
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="install-anywhere"></a>
-## Install anywhere
+## Install — every way, every platform
+
+```bash
+pip install "git+https://github.com/cognis-digital/payloadlab.git"    # pip (works today)
+pipx install "git+https://github.com/cognis-digital/payloadlab.git"   # isolated CLI
+uv tool install "git+https://github.com/cognis-digital/payloadlab.git" # uv
+pip install cognis-payloadlab                                          # PyPI (when published)
+docker run --rm ghcr.io/cognis-digital/payloadlab:latest --help        # Docker
+brew install cognis-digital/tap/payloadlab                             # Homebrew tap
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/payloadlab/main/install.sh | sh
+```
 
 | Linux | macOS | Windows | Docker | Cloud |
 |---|---|---|---|---|
