@@ -1,0 +1,16 @@
+[
+  {
+    "file": "Invoice_Q3.docm",
+    "vba_autoexec": true,
+    "capa_shell_exec": true,
+    "persistence_registry": false,
+    "macro_obfuscation": "high",
+    "external_template_inj": true
+  },
+  {
+    "file": "Report.docx",
+    "vba_autoexec": false,
+    "capa_shell_exec": false,
+    "persistence_registry": false
+  }
+]

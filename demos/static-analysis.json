@@ -1,0 +1,14 @@
+[
+  {
+    "file": "invoice.docm",
+    "vba_autoexec": true,
+    "capa_shell_exec": true,
+    "persistence_registry": false
+  },
+  {
+    "file": "setup.exe",
+    "vba_autoexec": false,
+    "capa_shell_exec": true,
+    "persistence_registry": true
+  }
+]

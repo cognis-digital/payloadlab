@@ -1,0 +1,17 @@
+[
+  {
+    "file": "setup.exe",
+    "vba_autoexec": false,
+    "capa_shell_exec": true,
+    "persistence_registry": true,
+    "pe_signed": false,
+    "imphash": "a1b2c3d4e5f6"
+  },
+  {
+    "file": "updater.exe",
+    "vba_autoexec": false,
+    "capa_shell_exec": true,
+    "persistence_registry": true,
+    "pe_signed": false
+  }
+]
