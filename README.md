@@ -16,7 +16,7 @@
 </div>
 
 ```bash
-pip install cognis-payloadlab
+pip install "git+https://github.com/cognis-digital/payloadlab.git"
 payloadlab scan .            # → prioritized findings in seconds
 ```
 
@@ -50,7 +50,7 @@ Static malicious payload analyzer — PE/ELF/LNK/macro/OneNote — without stand
 ## Quick start
 
 ```bash
-pip install cognis-payloadlab
+pip install "git+https://github.com/cognis-digital/payloadlab.git"
 payloadlab --version
 payloadlab scan .                       # scan current project
 payloadlab scan . --format json         # machine-readable

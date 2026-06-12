@@ -1,6 +1,5 @@
 """Smoke + behavior tests for PAYLOADLAB. No network. Standard library only."""
 import base64
-import json
 import os
 import struct
 import sys
