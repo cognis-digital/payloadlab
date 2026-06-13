@@ -20,6 +20,12 @@ pip install "git+https://github.com/cognis-digital/payloadlab.git"
 payloadlab scan .            # → prioritized findings in seconds
 ```
 
+<!-- cognis:layman:start -->
+## What is this?
+
+PAYLOADLAB is a command-line tool that examines suspicious files — such as email attachments, downloaded executables, or Office documents — and tells you whether they contain malicious content, without ever running them. It reads the file's raw bytes, looks for known danger signals like embedded scripts, network addresses, and PowerShell commands, then gives you a plain verdict (clean, low-risk, suspicious, or malicious) along with a prioritized list of what it found. Security analysts, IT teams, and developers use it to quickly triage potentially harmful files during incident response, code review, or automated CI pipelines.
+<!-- cognis:layman:end -->
+
 ## Contents
 
 - [Why payloadlab?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
@@ -47,6 +53,42 @@ Static malicious payload analyzer — PE/ELF/LNK/macro/OneNote — without stand
 <div align="right"><a href="#top">↑ back to top</a></div>
 
 <a name="quick-start"></a>
+<!-- cognis:install:start -->
+## Install
+
+`payloadlab` is source-available (not published to PyPI) — every method below installs
+straight from GitHub. Pick whichever you prefer; the one-line scripts auto-detect
+the best tool available on your machine.
+
+**One-liner (Linux / macOS):**
+```sh
+curl -fsSL https://raw.githubusercontent.com/cognis-digital/payloadlab/HEAD/install.sh | sh
+```
+
+**One-liner (Windows PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/cognis-digital/payloadlab/HEAD/install.ps1 | iex
+```
+
+**Or install manually — any one of:**
+```sh
+pipx install "git+https://github.com/cognis-digital/payloadlab.git"     # isolated (recommended)
+uv tool install "git+https://github.com/cognis-digital/payloadlab.git"  # uv
+pip install "git+https://github.com/cognis-digital/payloadlab.git"      # pip
+```
+
+**From source:**
+```sh
+git clone https://github.com/cognis-digital/payloadlab.git
+cd payloadlab && pip install .
+```
+
+Then run:
+```sh
+payloadlab --help
+```
+<!-- cognis:install:end -->
+
 ## Quick start
 
 ```bash
