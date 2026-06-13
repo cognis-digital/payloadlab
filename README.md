@@ -20,6 +20,32 @@ pip install cognis-payloadlab
 payloadlab scan .            # → prioritized findings in seconds
 ```
 
+## Usage — step by step
+
+`payloadlab` is a static malicious-payload analyzer for PE/ELF/LNK/macro/OneNote files (static analysis only — it never executes samples). Exit codes escalate by verdict: `0` clean, `1` low-risk, `2` suspicious, `3` malicious.
+
+1. **Install**:
+   ```bash
+   pip install -e .
+   payloadlab --version
+   ```
+2. **Scan** one or more files:
+   ```bash
+   payloadlab scan sample.bin invoice.lnk
+   ```
+3. **Read the output** as JSON (per-file verdict and indicators):
+   ```bash
+   payloadlab scan sample.bin --format json | jq '.[].verdict'
+   ```
+4. **Gate on severity** — make the process fail at or above a chosen verdict:
+   ```bash
+   payloadlab scan ./quarantine/* --fail-on suspicious
+   ```
+5. **Automate in CI / a sandbox intake** — branch on the exit code:
+   ```bash
+   payloadlab scan "$f" --fail-on malicious && echo clean || echo "flagged: $?"
+   ```
+
 ## Contents
 
 - [Why payloadlab?](#why) · [Features](#features) · [Quick start](#quick-start) · [Example](#example) · [Architecture](#architecture) · [AI stack](#ai-stack) · [How it compares](#how-it-compares) · [Integrations](#integrations) · [Install anywhere](#install-anywhere) · [Related](#related) · [Contributing](#contributing)
