@@ -36,3 +36,6 @@ payloadlab = "payloadlab.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["payloadlab"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
