@@ -64,7 +64,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 
-    if args.command != "scan":
+    if getattr(args, "command", None) != "scan":
         parser.print_help(sys.stderr)
         return 2
 
@@ -74,8 +74,20 @@ def main(argv: Optional[List[str]] = None) -> int:
         try:
             reports.append(analyze_file(path))
         except (OSError, IOError) as exc:
-            print(f"error: cannot read {path}: {exc}", file=sys.stderr)
+            print(f"error: cannot read {path!r}: {exc}", file=sys.stderr)
             had_error = True
+        except ValueError as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            had_error = True
+        except Exception as exc:  # noqa: BLE001
+            print(
+                f"error: unexpected failure analysing {path!r}: {exc}",
+                file=sys.stderr,
+            )
+            had_error = True
+
+    if not reports and had_error:
+        return 3
 
     if args.format == "json":
         print(json.dumps([r.to_dict() for r in reports], indent=2))

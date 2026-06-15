@@ -8,10 +8,15 @@ from __future__ import annotations
 
 import base64
 import math
+import os
 import re
 import struct
 from dataclasses import dataclass, field, asdict
 from typing import Dict, List, Tuple
+
+# Maximum file size accepted by analyze_file (256 MiB).  Larger files are
+# rejected early with a clear ValueError so callers don't hit MemoryError.
+MAX_FILE_BYTES = 256 * 1024 * 1024
 
 # ---------------------------------------------------------------------------
 # Data model
@@ -208,7 +213,8 @@ def _scan_strings(data: bytes) -> List[Finding]:
     # raw IPv4 literals without an accompanying URL are notable in binaries
     if not urls:
         ips = sorted({m.group(0) for m in IP_RE.finditer(data)})
-        good = [ip for ip in ips if not ip.startswith((b"0.", b"255.")) and ip != b"127.0.0.1"]
+        good = [ip for ip in ips
+                if not ip.startswith((b"0.", b"255.")) and ip != b"127.0.0.1"]
         for ip in good[:10]:
             findings.append(Finding(
                 "network.embedded_ip", "low",
@@ -262,17 +268,24 @@ def _scan_table(data: bytes, table: Dict[bytes, Tuple[str, str]],
 def _analyze_pe(data: bytes) -> List[Finding]:
     findings: List[Finding] = []
     if len(data) < 0x40:
+        findings.append(Finding(
+            "pe.truncated", "low", "MZ header but file too short to parse", ""))
         return findings
-    e_lfanew = struct.unpack_from("<I", data, 0x3C)[0]
-    if e_lfanew + 24 <= len(data) and data[e_lfanew:e_lfanew + 4] == b"PE\x00\x00":
-        machine = struct.unpack_from("<H", data, e_lfanew + 4)[0]
-        nsect = struct.unpack_from("<H", data, e_lfanew + 6)[0]
-        arch = {0x14c: "x86", 0x8664: "x64", 0xaa64: "arm64"}.get(machine, hex(machine))
+    try:
+        e_lfanew = struct.unpack_from("<I", data, 0x3C)[0]
+        if e_lfanew + 24 <= len(data) and data[e_lfanew:e_lfanew + 4] == b"PE\x00\x00":
+            machine = struct.unpack_from("<H", data, e_lfanew + 4)[0]
+            nsect = struct.unpack_from("<H", data, e_lfanew + 6)[0]
+            arch = {0x14c: "x86", 0x8664: "x64", 0xaa64: "arm64"}.get(
+                machine, hex(machine))
+            findings.append(Finding(
+                "pe.header", "info", f"valid PE, {arch}, {nsect} sections", arch))
+        else:
+            findings.append(Finding(
+                "pe.truncated", "low", "MZ header but PE signature not found", ""))
+    except struct.error:
         findings.append(Finding(
-            "pe.header", "info", f"valid PE, {arch}, {nsect} sections", arch))
-    else:
-        findings.append(Finding(
-            "pe.truncated", "low", "MZ header but PE signature not found", ""))
+            "pe.truncated", "low", "MZ header but PE header parse failed", ""))
     # import-name heuristics (works on raw bytes; no full parse needed)
     findings.extend(_scan_table(data, SUSPICIOUS_IMPORTS, "pe.import"))
     # high-entropy overlay / packing
@@ -287,12 +300,16 @@ def _analyze_pe(data: bytes) -> List[Finding]:
 def _analyze_elf(data: bytes) -> List[Finding]:
     findings: List[Finding] = []
     if len(data) >= 20:
-        bits = "64-bit" if data[4] == 2 else "32-bit"
-        endian = "LE" if data[5] == 1 else "BE"
-        etype = struct.unpack_from("<H", data, 16)[0]
-        kind = {1: "REL", 2: "EXEC", 3: "DYN/PIE", 4: "CORE"}.get(etype, str(etype))
-        findings.append(Finding(
-            "elf.header", "info", f"ELF {bits} {endian} {kind}", kind))
+        try:
+            bits = "64-bit" if data[4] == 2 else "32-bit"
+            endian = "LE" if data[5] == 1 else "BE"
+            etype = struct.unpack_from("<H", data, 16)[0]
+            kind = {1: "REL", 2: "EXEC", 3: "DYN/PIE", 4: "CORE"}.get(etype, str(etype))
+            findings.append(Finding(
+                "elf.header", "info", f"ELF {bits} {endian} {kind}", kind))
+        except (struct.error, IndexError):
+            findings.append(Finding(
+                "elf.truncated", "low", "ELF magic found but header parse failed", ""))
     findings.extend(_scan_table(data, ELF_SUSPICIOUS, "elf.sym"))
     return findings
 
@@ -301,14 +318,19 @@ def _analyze_lnk(data: bytes) -> List[Finding]:
     findings: List[Finding] = []
     findings.append(Finding("lnk.header", "info", "Windows shell link (.lnk)", ""))
     if len(data) >= 24:
-        flags = struct.unpack_from("<I", data, 20)[0]
-        if flags & 0x00000020:   # HasArguments
-            findings.append(Finding(
-                "lnk.has_arguments", "medium",
-                "shortcut carries command-line arguments", f"flags {flags:#x}"))
+        try:
+            flags = struct.unpack_from("<I", data, 20)[0]
+            if flags & 0x00000020:   # HasArguments
+                findings.append(Finding(
+                    "lnk.has_arguments", "medium",
+                    "shortcut carries command-line arguments", f"flags {flags:#x}"))
+        except struct.error:
+            pass  # truncated LNK; continue with string-based analysis
     # LNK abuse usually surfaces in the embedded command line strings
     wide = ("\n".join(_wide_strings(data))).encode("ascii", "ignore")
-    findings.extend(_scan_table(data, PS_TRIGGERS, "lnk.cmd", search=wide + data.lower()))
+    findings.extend(
+        _scan_table(data, PS_TRIGGERS, "lnk.cmd", search=wide + data.lower())
+    )
     if b"cmd.exe" in data.lower() or b"c\x00m\x00d\x00.\x00e\x00x\x00e" in data:
         findings.append(Finding(
             "lnk.cmd.cmd_exe", "high",
@@ -412,6 +434,19 @@ def analyze_bytes(data: bytes, path: str = "<bytes>") -> Report:
 
 
 def analyze_file(path: str) -> Report:
+    """Read *path* and return an analysis Report.
+
+    Raises:
+        OSError: file cannot be opened or read.
+        ValueError: file exceeds MAX_FILE_BYTES or path is not a regular file.
+    """
+    if not os.path.isfile(path):
+        raise ValueError(f"not a regular file: {path!r}")
+    size = os.path.getsize(path)
+    if size > MAX_FILE_BYTES:
+        raise ValueError(
+            f"file too large ({size:,} bytes); limit is {MAX_FILE_BYTES:,} bytes"
+        )
     with open(path, "rb") as fh:
         data = fh.read()
     return analyze_bytes(data, path=path)
