@@ -20,6 +20,55 @@ pip install cognis-payloadlab
 payloadlab scan .            # → prioritized findings in seconds
 ```
 
+
+<!-- cognis:example:start -->
+## 🔎 Example output
+
+Real, reproducible output from the tool — runs offline:
+
+```console
+$ payloadlab-emit --version
+payloadlab 0.1.0
+```
+
+```console
+$ payloadlab-emit --help
+usage: payloadlab [-h] [--version] {scan} ...
+
+Static malicious payload analyzer (PE/ELF/LNK/macro/OneNote).
+
+positional arguments:
+  {scan}
+    scan      statically analyze one or more files
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
+```
+
+> Blocks above are real `payloadlab` output — reproduce them from a clone.
+
+**Sample result format** _(illustrative values — run on your own data for real findings):_
+
+```
+{
+"Findings": [
+    {
+        "id": "1234567890",
+        "title": "Suspicious Network Traffic",
+        "description": "Potential malicious activity detected on port 443.",
+        "created_at": "2023-02-16T14:30:00Z",
+        "updated_at": "2023-02-16T14:30:01Z",
+        "labels": ["Network", "Malware"],
+        "confidence": 0.8,
+        "severity": "Medium"
+    }
+]
+}
+```
+
+<!-- cognis:example:end -->
+
 ## Usage — step by step
 
 `payloadlab` is a static malicious-payload analyzer for PE/ELF/LNK/macro/OneNote files (static analysis only — it never executes samples). Exit codes escalate by verdict: `0` clean, `1` low-risk, `2` suspicious, `3` malicious.

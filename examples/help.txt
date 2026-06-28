@@ -1,0 +1,13 @@
+$ payloadlab-emit --help
+
+usage: payloadlab [-h] [--version] {scan} ...
+
+Static malicious payload analyzer (PE/ELF/LNK/macro/OneNote).
+
+positional arguments:
+  {scan}
+    scan      statically analyze one or more files
+
+options:
+  -h, --help  show this help message and exit
+  --version   show program's version number and exit
